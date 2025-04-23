@@ -4,7 +4,7 @@
 
 use std::{borrow::Cow, sync::Arc};
 
-use http::{header::CONTENT_TYPE, Request, Response as HttpResponse, StatusCode};
+use http::{header::CONTENT_TYPE, header::CONTENT_ENCODING, Request, Response as HttpResponse, StatusCode};
 use tauri_utils::config::HeaderAddition;
 
 use crate::{
@@ -163,6 +163,9 @@ fn get_response<R: Runtime>(
     builder = builder.header(CONTENT_TYPE, &asset.mime_type);
     if let Some(csp) = &asset.csp_header {
       builder = builder.header("Content-Security-Policy", csp);
+    }
+    if asset.compressed {
+      builder = builder.header(CONTENT_ENCODING, "br");
     }
     builder.body(asset.bytes.into())?
   };

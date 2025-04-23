@@ -147,6 +147,15 @@ impl EmbeddedAssets {
       .map(Cow::Owned)
   }
 
+  #[cfg(feature = "compression")]
+  pub fn get_compressed(&self, key: &AssetKey) -> Option<Cow<'_, [u8]>> {
+    self
+      .assets
+      .get(key.as_ref())
+      .copied()
+      .map(|a| Cow::Owned(a.to_vec()))
+  }
+
   /// Get an asset by key.
   #[cfg(not(feature = "compression"))]
   pub fn get(&self, key: &AssetKey) -> Option<Cow<'_, [u8]>> {

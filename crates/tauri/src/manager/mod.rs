@@ -166,6 +166,8 @@ pub struct Asset {
   pub mime_type: String,
   /// The `Content-Security-Policy` header value.
   pub csp_header: Option<String>,
+  /// Whether the asset is compressed.
+  pub compressed: bool,
 }
 
 impl Asset {
@@ -407,9 +409,15 @@ impl<R: Runtime> AppManager<R> {
 
     let mut asset_path = AssetKey::from(path.as_str());
 
-    let asset_response = assets
-      .get(&asset_path)
-      .or_else(|| {
+    let compressed = cfg!(feature = "compression") && cfg!(feature = "serve_compressed");
+    
+    let asset = if compressed {
+      assets.get_compressed(&asset_path)
+    } else {
+      assets.get(&asset_path)
+    };
+    
+    let asset_response = asset.or_else(|| {
         log::debug!("Asset `{path}` not found; fallback to {path}.html");
         let fallback = format!("{path}.html").into();
         let asset = assets.get(&fallback);
@@ -466,6 +474,7 @@ impl<R: Runtime> AppManager<R> {
           bytes: final_data,
           mime_type,
           csp_header,
+          compressed
         })
       }
       Err(e) => {

@@ -324,6 +324,7 @@ impl<R: Runtime> AssetResolver<R> {
             bytes,
             mime_type,
             csp_header: None,
+            compressed: false,
           }
         });
       }

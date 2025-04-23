@@ -82,6 +82,10 @@ impl<R: Runtime> Assets<R> for NoopAsset {
   fn get(&self, key: &AssetKey) -> Option<Cow<'_, [u8]>> {
     None
   }
+  
+  fn get_compressed(&self, key: &AssetKey) -> Option<Cow<'_, [u8]>> {
+    None
+  }
 
   fn iter(&self) -> Box<AssetsIter<'_>> {
     Box::new(

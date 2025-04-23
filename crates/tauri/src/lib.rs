@@ -349,6 +349,8 @@ pub trait Assets<R: Runtime>: Send + Sync + 'static {
 
   /// Get the content of the passed [`AssetKey`].
   fn get(&self, key: &AssetKey) -> Option<Cow<'_, [u8]>>;
+  
+  fn get_compressed(&self, key: &AssetKey) -> Option<Cow<'_, [u8]>>;
 
   /// Iterator for the assets.
   fn iter(&self) -> Box<tauri_utils::assets::AssetsIter<'_>>;
@@ -360,6 +362,10 @@ pub trait Assets<R: Runtime>: Send + Sync + 'static {
 impl<R: Runtime> Assets<R> for EmbeddedAssets {
   fn get(&self, key: &AssetKey) -> Option<Cow<'_, [u8]>> {
     EmbeddedAssets::get(self, key)
+  }
+  
+  fn get_compressed(&self, key: &AssetKey) -> Option<Cow<'_, [u8]>> {
+    EmbeddedAssets::get_compressed(self, key)
   }
 
   fn iter(&self) -> Box<AssetsIter<'_>> {

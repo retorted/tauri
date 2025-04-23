@@ -190,6 +190,7 @@ tray-icon = ["dep:tray-icon"]
 tracing = ["dep:tracing", "tauri-macros/tracing", "tauri-runtime-wry?/tracing"]
 test = []
 compression = ["tauri-macros/compression", "tauri-utils/compression"]
+serve_compressed = []
 wry = ["webview2-com", "webkit2gtk", "tauri-runtime-wry"]
 # TODO: Remove in v3 - wry does not have this feature anymore
 objc-exception = []
